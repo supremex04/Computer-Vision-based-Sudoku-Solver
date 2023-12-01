@@ -1,7 +1,7 @@
 import tkinter as tk
-from main import validityCheck
-from main import solve
-from main import printBoard
+from tkinter import font
+from main import validityCheck, solve, printBoard
+
 
 root = tk.Tk()
 root.title("Sudoku Grid")
@@ -22,12 +22,13 @@ board = [
 genesis = board.copy()
 genesisMark = []   #mark all the empty cells in genesis board
 
+boldFont = font.Font(family="Helvetica", size=20, weight="bold")
 def sodukoLoader(board, pos:list):
     if len(pos) == 0:
         for row in range(9):
             for col in range(9):
                 if board[row][col] !=0:
-                    canvases[row][col].create_text(20, 25, text=str(board[row][col]),fill = "#a44648", font=("Helvetica", 20), justify = "center")
+                    canvases[row][col].create_text(20, 25, text=str(board[row][col]),fill = "#a44648", font=boldFont, justify = "center")
                 else:
                     genesisMark.append((row,col))
     else:
@@ -97,9 +98,9 @@ for i in range(9):
 
 sodukoLoader(board, genesisMark)
 
-infoCanvas = tk.Canvas(root,  bg = "#ffdab9", borderwidth=1)
+infoCanvas = tk.Canvas(root,  bg = "#ffdab9", borderwidth=0)
 canvases.append(infoCanvas)
-infoCanvas.place(x=0,y = 378)
+infoCanvas.place(x=0,y = 377)
 
 
 solveButton = tk.Button(root, text = "Solve!", command=solver)

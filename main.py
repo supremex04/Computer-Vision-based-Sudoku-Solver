@@ -12,7 +12,7 @@ board = [
     [0,4,9,2,0,6,0,0,7]
 ]
 
-def printBoard(board):
+def printBoard(board:list):
     
     for i in range(len(board)):
         if (i%3) == 0 and i !=0:
@@ -25,7 +25,7 @@ def printBoard(board):
             else:
                 print(str(board[i][j]) + " ", end ="")
 
-def solve(board):
+def solve(board:list):
     find =findEmpty(board)
     if not find:
         return True
@@ -43,14 +43,14 @@ def solve(board):
 
 
 
-def findEmpty(board):
+def findEmpty(board:list):
     for i in range(len(board)):
         for j in range(len(board[0])):
             if board[i][j] == 0:
                 return (i,j)
     return False
 
-def validityCheck(board, position, guess):
+def validityCheck(board:list, position:tuple, guess:int):
     x, y = position
     #row check
     for i in range(len(board)):
