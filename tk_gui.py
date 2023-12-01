@@ -1,8 +1,11 @@
 import tkinter as tk
 from main import validityCheck
+from main import solve
+from main import printBoard
 
 root = tk.Tk()
 root.title("Sudoku Grid")
+root.geometry("378x440")
 
 board = [
     [7,8,0,4,0,0,1,2,0],
@@ -16,17 +19,29 @@ board = [
     [0,4,9,2,0,6,0,0,7]
 ]
 
-def sodukoLoader(board):
-    for row in range(9):
-        for col in range(9):
-            if board[row][col] !=0:
-                canvases[row][col].create_text(20, 25, text=str(board[row][col]),fill = "#a44648", font=("Helvetica", 20), justify = "center")
+genesis = board.copy()
+genesisMark = []   #mark all the empty cells in genesis board
+
+def sodukoLoader(board, pos:list):
+    if len(pos) == 0:
+        for row in range(9):
+            for col in range(9):
+                if board[row][col] !=0:
+                    canvases[row][col].create_text(20, 25, text=str(board[row][col]),fill = "#a44648", font=("Helvetica", 20), justify = "center")
+                else:
+                    genesisMark.append((row,col))
+    else:
+        for row in range(9):
+            for col in range(9):
+                if (row,col) in pos:
+                    canvases[row][col].create_text(20, 25, text=str(board[row][col]),fill = "black", font=("Helvetica", 20), justify = "center")
+
 
 def cell_clicked(event):
-    # Get the clicked canvas
+    #Get the clicked canvas
     clicked_canvas = event.widget
 
-    # Deselect all cells
+    #Deselect all cells
     for row in range(9):
         for col in range(9):
             boxX = row//3
@@ -37,15 +52,15 @@ def cell_clicked(event):
                 canvases[row][col].config(relief = "solid", bg="#fffec8", cursor ="hand2")
 
 
-    # Highlight the clicked cell
+    #Highlight the clicked cell
     clicked_canvas.config(relief = "groove", bg="lightblue",cursor = "hand2")
 
 def key_pressed(event):
-    # Get the pressed key
+    #Get the pressed key
     pressed_key = event.char
     if pressed_key.isdigit():
         num = int(pressed_key)
-        # Find the highlighted cell
+        #Find the highlighted cell
         for row in range(9):
             for col in range(9):
                 if canvases[row][col]["bg"] == "lightblue":
@@ -55,7 +70,15 @@ def key_pressed(event):
                         board[row][col] = num
                         return
 
-# Create a 9x9 grid of Canvas widgets
+
+def solver():
+    solve(genesis)
+    print("                          ")
+    print("SOLVED:")
+    printBoard(genesis)
+    sodukoLoader(genesis, genesisMark)
+
+
 canvases = []
 
 for i in range(9):
@@ -72,8 +95,17 @@ for i in range(9):
         canvas_row.append(canvas)
     canvases.append(canvas_row)
 
-sodukoLoader(board)
-# Bind keyboard events
-root.bind("<Key>", key_pressed)
+sodukoLoader(board, genesisMark)
 
+infoCanvas = tk.Canvas(root,  bg = "#ffdab9", borderwidth=1)
+canvases.append(infoCanvas)
+infoCanvas.place(x=0,y = 378)
+
+
+solveButton = tk.Button(root, text = "Solve!", command=solver)
+solveButton.place(x =320, y= 400)
+
+
+#Bind keyboard events
+root.bind("<Key>", key_pressed)
 root.mainloop()

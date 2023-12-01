@@ -78,7 +78,7 @@ def validityCheck(board, position, guess):
 
 print("ORIGINAL:")
 printBoard(board)
-solve(board)
-print("                          ")
-print("SOLVED:")
-printBoard(board)
+# solve(board)
+# print("                          ")
+# print("SOLVED:")
+# printBoard(board)
