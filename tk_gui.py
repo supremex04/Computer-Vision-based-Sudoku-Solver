@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import font
-from main import validityCheck, solve, printBoard
+from main import validityCheck
+from main import solve
+from main import printBoard
 
 
 root = tk.Tk()
@@ -105,7 +107,6 @@ infoCanvas.place(x=0,y = 377)
 
 solveButton = tk.Button(root, text = "Solve!", command=solver)
 solveButton.place(x =320, y= 400)
-
 
 #Bind keyboard events
 root.bind("<Key>", key_pressed)
