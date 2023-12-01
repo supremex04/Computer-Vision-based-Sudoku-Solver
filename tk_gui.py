@@ -1,8 +1,7 @@
 import tkinter as tk
+import copy
 from tkinter import font
-from main import validityCheck
-from main import solve
-from main import printBoard
+from main import validityCheck, solve, printBoard
 
 
 root = tk.Tk()
@@ -21,7 +20,7 @@ board = [
     [0,4,9,2,0,6,0,0,7]
 ]
 
-genesis = board.copy()
+genesis = copy.deepcopy(board)
 genesisMark = []   #mark all the empty cells in genesis board
 
 boldFont = font.Font(family="Helvetica", size=20, weight="bold")
