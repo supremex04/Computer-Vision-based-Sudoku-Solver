@@ -57,23 +57,27 @@ def sortPoints(a):
                 sortedList[2] = point[0].tolist()
     return sortedList
 
-print("Sorted list:", sortPoints(largest))
+sortedList = sortPoints(largest)
 
 #corner points of the bounding rectangle
 x, y, w, h = cv.boundingRect(largest)
-#sourcePoints = np.float32([x,y],[]) 
 largestDetectImage = image.copy()
-cv.circle(largestDetectImage, (125, 139), 7, (255,0,0),cv.FILLED)
-cv.circle(largestDetectImage, (369, 144), 7, (255,0,0),cv.FILLED)
-cv.circle(largestDetectImage, (132, 457), 7, (255,0,0),cv.FILLED)
-cv.circle(largestDetectImage, (376, 427), 7, (255,0,0),cv.FILLED)
+cv.circle(largestDetectImage, sortedList[0], 7, (255,0,0),cv.FILLED)
+cv.circle(largestDetectImage, sortedList[1], 7, (255,0,0),cv.FILLED)
+cv.circle(largestDetectImage, sortedList[2], 7, (255,0,0),cv.FILLED)
+cv.circle(largestDetectImage, sortedList[3], 7, (255,0,0),cv.FILLED)
 
+#wrap perspective
+sourcePoints = np.float32(sortedList) 
+destinationPoints = np.float32([[0,0],[w,0],[0,h],[w,h]])
+matrix = cv.getPerspectiveTransform(sourcePoints,destinationPoints)
+wrappedImage = cv.warpPerspective(image,matrix,(w,h))
 
 
 blank = np.zeros((height, width,3), np.uint8)
 
 
-imageList = [[image,blurredImage, threshold],[image_with_contours,largestDetectImage, blank]]
+imageList = [[image,blurredImage, threshold],[image_with_contours,largestDetectImage, wrappedImage]]
 stackedImages =stackImages(0.6, imageList)
 
 
