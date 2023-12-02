@@ -18,7 +18,7 @@ threshold = cv.adaptiveThreshold(blurredImage, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_
 #contour detection
 contours, hierarchy = cv.findContours(threshold, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
 image_with_contours = image.copy()
-#cv.drawContours(image_with_contours, contours, -1, (0, 255, 0), 2)
+cv.drawContours(image_with_contours, contours, -1, (0, 255, 0), 2)
 
 #largest contour
 def largestContour(contours):
@@ -29,25 +29,44 @@ def largestContour(contours):
             perimeter = cv.arcLength(contour, True)
             approx = cv.approxPolyDP(contour, 0.02*perimeter,True)
             if (area > maxArea) and len(approx) == 4:
-                largest = contour
+                largest = approx
                 maxArea = area 
     return largest, maxArea
 
 largest, maxArea = largestContour(contours)
-perimeter = cv.arcLength(largest, True)
-approx = cv.approxPolyDP(largest, 0.02*perimeter,True)
-print("Approx;", type(approx))
-cv.drawContours(image_with_contours, largest, -1, (0, 255, 0), 5)
+#print("Approx;", largest)
+#sort the points in largest = approx, which contains 4 corner points of the contour
+def sortPoints(a):
+    sum = []
+    sortedList = [0,0,0,0]
+    #get a list of sum of points
+    for point in a:
+        sum.append(point[0][0] + point[0][1])
 
+    #farthest point
+    sortedList[3] = [a[sum.index(max(sum)),0,0],a[sum.index(max(sum)),0,1]]
+    #this will be 0,0 
+    sortedList[0] = [a[sum.index(min(sum)),0,0],a[sum.index(min(sum)),0,1]]
+
+    #for remaining two points
+    for point in a:
+        if (point[0,0]+ point[0][1]) != max(sum) and (point[0,0]+ point[0][1]) != min(sum):
+            if (point[0,0] - point[0][1]) > 0:
+                sortedList[1] = point[0].tolist()
+            else:
+                sortedList[2] = point[0].tolist()
+    return sortedList
+
+print("Sorted list:", sortPoints(largest))
 
 #corner points of the bounding rectangle
 x, y, w, h = cv.boundingRect(largest)
 #sourcePoints = np.float32([x,y],[]) 
 largestDetectImage = image.copy()
-cv.circle(largestDetectImage, (125, 139), 7, (0,0,255),cv.FILLED)
-cv.circle(largestDetectImage, (369, 144), 7, (0,0,255),cv.FILLED)
-cv.circle(largestDetectImage, (132, 457), 7, (0,0,255),cv.FILLED)
-cv.circle(largestDetectImage, (376, 427), 7, (0,0,255),cv.FILLED)
+cv.circle(largestDetectImage, (125, 139), 7, (255,0,0),cv.FILLED)
+cv.circle(largestDetectImage, (369, 144), 7, (255,0,0),cv.FILLED)
+cv.circle(largestDetectImage, (132, 457), 7, (255,0,0),cv.FILLED)
+cv.circle(largestDetectImage, (376, 427), 7, (255,0,0),cv.FILLED)
 
 
 
