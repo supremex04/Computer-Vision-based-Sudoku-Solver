@@ -30,29 +30,31 @@ def largestContour(contours):
             approx = cv.approxPolyDP(contour, 0.02*perimeter,True)
             if (area > maxArea) and len(approx) == 4:
                 largest = contour
-                maxArea = area
+                maxArea = area 
     return largest, maxArea
 
 largest, maxArea = largestContour(contours)
+perimeter = cv.arcLength(largest, True)
+approx = cv.approxPolyDP(largest, 0.02*perimeter,True)
+print("Approx;", type(approx))
 cv.drawContours(image_with_contours, largest, -1, (0, 255, 0), 5)
 
-print(largest)
 
 #corner points of the bounding rectangle
 x, y, w, h = cv.boundingRect(largest)
 #sourcePoints = np.float32([x,y],[]) 
 largestDetectImage = image.copy()
-cv.circle(largestDetectImage, (x,y), 10, (0,0,255),cv.FILLED)
-cv.circle(largestDetectImage, (x+w,y), 10, (0,0,255),cv.FILLED)
-cv.circle(largestDetectImage, (x,y+h), 10, (0,0,255),cv.FILLED)
-cv.circle(largestDetectImage, (x+w,y+h), 10, (0,0,255),cv.FILLED)
+cv.circle(largestDetectImage, (125, 139), 7, (0,0,255),cv.FILLED)
+cv.circle(largestDetectImage, (369, 144), 7, (0,0,255),cv.FILLED)
+cv.circle(largestDetectImage, (132, 457), 7, (0,0,255),cv.FILLED)
+cv.circle(largestDetectImage, (376, 427), 7, (0,0,255),cv.FILLED)
 
 
 
 blank = np.zeros((height, width,3), np.uint8)
 
 
-imageList = [[image,blurredImage, threshold],[image_with_contours, threshold,largestDetectImage]]
+imageList = [[image,blurredImage, threshold],[image_with_contours,largestDetectImage, blank]]
 stackedImages =stackImages(0.6, imageList)
 
 
