@@ -50,7 +50,7 @@ def sortPoints(a):
 
     #for remaining two points
     for point in a:
-        if (point[0,0]+ point[0][1]) != max(sum) and (point[0,0]+ point[0][1]) != min(sum):
+        if (point[0][0]+ point[0][1]) != max(sum) and (point[0,0]+ point[0][1]) != min(sum):
             if (point[0,0] - point[0][1]) > 0:
                 sortedList[1] = point[0].tolist()
             else:
