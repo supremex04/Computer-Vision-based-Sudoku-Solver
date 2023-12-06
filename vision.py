@@ -2,7 +2,7 @@ import cv2 as cv
 import numpy as np
 from stackwindows import stackImages
 
-path = "./pictures/test4.jpg"
+path = "./Files/Images/test4.jpg"
 
 height = 500
 width = 500
