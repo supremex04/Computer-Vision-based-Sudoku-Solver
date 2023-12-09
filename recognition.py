@@ -29,3 +29,8 @@ def getPrediction(boxes, model):
             result.append(0)
     return result
 
+def oranizer(result):
+    board = []
+    for i in range (0 to 80):
+        board.append(result[i])
+    
