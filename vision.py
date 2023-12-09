@@ -3,7 +3,7 @@ import numpy as np
 from stackwindows import stackImages
 from recognition import *
 
-path = "./Files/Images/test4test.jpg"
+path = "./Files/Images/test4.jpg"
 model = initializeModel()
 height = 450
 width = 450
@@ -91,7 +91,9 @@ def splitImage(img):
 boxes = splitImage(wrappedImage)
 cv.imshow("sample", boxes[1])
 numbers = getPrediction(boxes, model)
-print(numbers)
+#organize the one dimensional list into sudoku board list format
+board = oranizer(numbers)
+
 
 blank = np.zeros((height, width,3), np.uint8)
 imageList = [[image,blurredImage, threshold],[image_with_contours,largestDetectImage, wrappedImage]]
