@@ -1,7 +1,8 @@
 import numpy as np
 import cv2 as cv
-import pickle
+from keras.models import load_model
 
 
-
-pickle_in = open("./Files/Model/model.h5", "rb")
+def initializeModel():
+    model = load_model("./Files/Model/model.h5")
+    return model
