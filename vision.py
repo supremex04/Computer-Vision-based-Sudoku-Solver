@@ -1,11 +1,12 @@
 import cv2 as cv
 import numpy as np
 from stackwindows import stackImages
+from recognition import *
 
-path = "./Files/Images/test4.jpg"
-
-height = 500
-width = 500
+path = "./Files/Images/test4test.jpg"
+model = initializeModel()
+height = 450
+width = 450
 
 image = cv.imread(path)
 image = cv.resize(image, (width, height))
@@ -34,7 +35,7 @@ def largestContour(contours):
     return largest, maxArea
 
 largest, maxArea = largestContour(contours)
-#print("Approx;", largest)
+
 #sort the points in largest = approx, which contains 4 corner points of the contour
 def sortPoints(a):
     sum = []
@@ -72,11 +73,27 @@ sourcePoints = np.float32(sortedList)
 destinationPoints = np.float32([[0,0],[w,0],[0,h],[w,h]])
 matrix = cv.getPerspectiveTransform(sourcePoints,destinationPoints)
 wrappedImage = cv.warpPerspective(image,matrix,(w,h))
+wrappedImage = cv.cvtColor(wrappedImage, cv.COLOR_BGR2GRAY)
+#reshaping the numpy array into 450 by 450 so wo can do equal 9/9 splits
+wrappedImage = cv.resize(wrappedImage, (width, height))
+#print(np.shape(wrappedImage))
 
+#split the image boxes
+def splitImage(img):
+    rows = np.vsplit(img,9)
+    boxes = []
+    for r in rows:
+        cols  = np.hsplit(r,9)
+        for box in cols:
+            boxes.append(box)
+    return boxes
+
+boxes = splitImage(wrappedImage)
+cv.imshow("sample", boxes[1])
+numbers = getPrediction(boxes, model)
+print(numbers)
 
 blank = np.zeros((height, width,3), np.uint8)
-
-
 imageList = [[image,blurredImage, threshold],[image_with_contours,largestDetectImage, wrappedImage]]
 stackedImages =stackImages(0.6, imageList)
 
