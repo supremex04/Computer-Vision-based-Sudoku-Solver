@@ -30,7 +30,14 @@ def getPrediction(boxes, model):
     return result
 
 def oranizer(result):
-    board = []
-    for i in range (0 to 80):
-        board.append(result[i])
+    revised = []
+    temp = []
+    for i in range(len(result)):
+        if (i%9 == 0 and i != 0):
+            revised.append(temp)
+            temp = []
+        temp.append(result[i])
+    revised.append(temp)
+    return revised
+
     
