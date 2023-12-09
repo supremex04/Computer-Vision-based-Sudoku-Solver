@@ -20,7 +20,7 @@ for i in range(0, noOfClasses):
     #here image becomes the name of each image from the picList
     for image in picList:
         currentImage = cv.imread(path + "/"+ str(i) + "/"+ image)
-        currentImage = cv.resize(currentImage, (30,30))
+        currentImage = cv.resize(currentImage, (32,32))
         images.append(currentImage)
         classNo.append(i)
     print(i, end = " ")
